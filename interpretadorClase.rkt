@@ -373,6 +373,8 @@
       (a-ref (pos vec)
              (vector-set! vec pos val)))))
 
+(define scan&parse
+  (sllgen:make-string-parser especificacion-lexica especificacion-gramatical))
 
 ;;Interpretador
 (define interpretador
@@ -381,4 +383,5 @@
                          especificacion-lexica especificacion-gramatical)))
 
 
-(interpretador)
+;;(interpretador)
+(provide (all-defined-out))
