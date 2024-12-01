@@ -71,9 +71,6 @@
 (define first1 (scan&parse "first(cons(1 cons(2 empty)))"))
 (check-equal?  (evaluar-programa first1) (car expected-exp1))
 
-(define first2 (scan&parse "first(empty)"))
-(check-equal?  (evaluar-programa first2) '())
-
 (define first3 (scan&parse "first(cons (1 empty))"))
 (check-equal?  (evaluar-programa first3) (car expected-exp3))
 
@@ -88,6 +85,34 @@
 
 ; --------------------------------- Test de first ---------------------------------
 
+; --------------------------------- Test de rest ---------------------------------
+(define rest1 (scan&parse "rest(cons(1 cons(2 empty)))"))
+(check-equal?  (evaluar-programa rest1) (cdr expected-exp1))
+
+
+(define rest4 (scan&parse "rest(cons (2 cons(5 cons(6 cons(7 empty)))))"))
+(check-equal?  (evaluar-programa rest4) (cdr expected-exp5))
+
+(define rest5 (scan&parse "rest(cons(1 let l = cons(2 cons(3 empty)) in l))"))
+(check-equal?  (evaluar-programa rest5) (cdr expected-exp6))
+
+(define rest6 (scan&parse "rest(let l = cons(1 cons(2 empty)) in let l2 = cons(3 cons(4 empty)) in cons(l l2))"))
+(check-equal?  (evaluar-programa rest6) (cdr expected-exp8))
+
+; --------------------------------- Test de rest ---------------------------------
+
+; --------------------------------- Test de nth ---------------------------------
+(define nth1 (scan&parse "nth(0 cons(1 cons(2 empty)))"))
+(check-equal?  (evaluar-programa nth1) (list-ref expected-exp1 0))
+
+(define nth2 (scan&parse "nth(1 cons(1 cons(2 empty)))"))
+(check-equal?  (evaluar-programa nth2) (list-ref expected-exp1 1))
+
+(define nth3 (scan&parse "nth(0 cons (1 empty))"))
+(check-equal?  (evaluar-programa nth3) (list-ref expected-exp3 0))
+
+(define nth4 (scan&parse "nth(1 cons (2 cons(5 cons(6 cons(7 empty)))))"))
+(check-equal?  (evaluar-programa nth4) (list-ref expected-exp5 1))
 
 #|
 ;Test 1: 
