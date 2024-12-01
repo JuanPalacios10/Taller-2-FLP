@@ -46,7 +46,7 @@
     (expresion ("cond" (arbno expresion "==>" expresion) "else" "==>" expresion "end") cond-exp)
 
     ;;Primitivas
-    (expresion (primitiva "(" (separated-list expresion ",") ")") prim-exp)
+    expresion (primitiva "(" (separated-list expresion ",") ")") prim-exp)
     (primitiva ("+") sum-prim)
     (primitiva ("-") minus-prim)
     (primitiva ("*") mult-prim)

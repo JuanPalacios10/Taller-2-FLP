@@ -87,7 +87,7 @@
 
 ; --------------------------------- Test de rest ---------------------------------
 (define rest1 (scan&parse "rest(cons(1 cons(2 empty)))"))
-(check-equal?  (evaluar-programa rest1) (cdr expected-exp1))
+(check-equal?  (evaluar-programa rest1) (cdr expected-exp1))  
 
 
 (define rest4 (scan&parse "rest(cons (2 cons(5 cons(6 cons(7 empty)))))"))
@@ -102,7 +102,7 @@
 ; --------------------------------- Test de rest ---------------------------------
 
 ; --------------------------------- Test de nth ---------------------------------
-(define nth1 (scan&parse "nth(0 cons(1 cons(2 empty)))"))
+(define nth1 (scan&parse "nth(cons(1 cons(2 empty)) 0)"))
 (check-equal?  (evaluar-programa nth1) (list-ref expected-exp1 0))
 
 (define nth2 (scan&parse "nth(1 cons(1 cons(2 empty)))"))
