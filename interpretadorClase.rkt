@@ -280,13 +280,15 @@
               '()
                        
       )
+      ;; cond exp
       (cond-exp (conds exp-trues exp-else)
           (letrec 
               (
                   (evaluar-cond (lambda (conds exp-trues)
                        (cond 
                            [(null? conds) (evaluar-expresion exp-else amb)]
-                           [(not (= (evaluar-expresion (car conds) amb) 0)) (evaluar-expresion (car exp-trues) amb)]
+                           [(and (number? (evaluar-expresion (car conds) amb)) (not (= (evaluar-expresion (car conds) amb) 0))) (evaluar-expresion (car exp-trues) amb)]
+                           [(equal? (evaluar-expresion (car conds) amb) #t) (evaluar-expresion (car exp-trues) amb)]
                            [else (evaluar-cond (cdr conds) (cdr exp-trues))]
                         ))
                     )
@@ -388,5 +390,5 @@
                          especificacion-lexica especificacion-gramatical)))
 
 
-(interpretador)
+;;(interpretador)
 (provide (all-defined-out))
