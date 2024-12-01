@@ -271,7 +271,7 @@
                 )
                 (if (not (list? expr2))
                     (eopl:error "Error:" expr2 "no es una lista")
-                (cons expr1 expr2)
+                (append (list expr1) expr2)
                     )
                 )
                 )
@@ -315,7 +315,12 @@
       (igual-prim () (= (car lval) (cadr lval)))
       ;; primitivas listas
       (length-prim () (length (car lval)))
-      (first-prim () (car (car lval)))
+      (first-prim ()
+      (let ((lista (car lval)))
+        (if (null? lista)
+        (eopl:error "Error: no se puede tomar el primer elemento de una lista vacia" lista)
+        (car lista)
+        )))
       (rest-prim () (cdr (car lval)))
       (nth-prim () (list-ref (car lval) (cadr lval)))
       (cons-prim () (cons (car lval) (cadr lval)))
@@ -383,5 +388,5 @@
                          especificacion-lexica especificacion-gramatical)))
 
 
-;;(interpretador)
+(interpretador)
 (provide (all-defined-out))
