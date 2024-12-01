@@ -96,7 +96,7 @@
 
 ;; 8. Expresión con condicionales de varios casos
 (define expc12 (scan&parse "cond let x = cond >(5, 6) ==> 1 <(5, 6) ==> 2 else ==> 3 end l = cons(1 cons(2 cons(3 empty))) in nth(l, x) ==> cond let y = cons(1 cons(2 empty)) in ==(first(y), 1) ==> 1 else ==> 0 end else ==> 9 end"))
-(define expc13 (scan&parse "cond let x = 5 y = 1 in cond <(x, y) ==> let z = cond ==(-(x, 3), y) ==> 3 ==(x, y) ==> 2 else ==> 10 end in >(x, -(z, y)) else ==> cond let l = cons(1 cons(5 cons(3 empty))) in ==(nth(l, 0), 1) ==> 30 else ==> false end end ==> 1 else ==> 15 end"))
+(define expc13 (scan&parse "cond let x = 5 y = 1 in cond <(x, y) ==> let z = cond ==(-(x, 3), y) ==> 3 ==(x, y) ==> 2 else ==> 10 end in >(x, -(z, y)) else ==> cond let l = cons(1 cons(5 cons(3 empty))) in ==(nth(l, 0), 1) ==> 30 else ==> false end end ==> +(77, 33) else ==> 15 end"))
 
 (check-equal? (evaluar-programa expc12) 1)
-(check-equal? (evaluar-programa expc13) 1)
+(check-equal? (evaluar-programa expc13) 110)
