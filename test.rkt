@@ -102,16 +102,16 @@
 ; --------------------------------- Test de rest ---------------------------------
 
 ; --------------------------------- Test de nth ---------------------------------
-(define nth1 (scan&parse "nth(0 cons(1 cons(2 empty)))"))
+(define nth1 (scan&parse "nth(cons(1 cons(2 empty)), 0)"))
 (check-equal?  (evaluar-programa nth1) (list-ref expected-exp1 0))
 
-(define nth2 (scan&parse "nth(1 cons(1 cons(2 empty)))"))
+(define nth2 (scan&parse "nth(cons(1 cons(2 empty)), 1)"))
 (check-equal?  (evaluar-programa nth2) (list-ref expected-exp1 1))
 
-(define nth3 (scan&parse "nth(0 cons (1 empty))"))
+(define nth3 (scan&parse "nth(cons (1 empty), 0)"))
 (check-equal?  (evaluar-programa nth3) (list-ref expected-exp3 0))
 
-(define nth4 (scan&parse "nth(1 cons (2 cons(5 cons(6 cons(7 empty)))))"))
+(define nth4 (scan&parse "nth(cons (2 cons(5 cons(6 cons(7 empty)))), 1)"))
 (check-equal?  (evaluar-programa nth4) (list-ref expected-exp5 1))
 
 ;; Tests de los condicionales
