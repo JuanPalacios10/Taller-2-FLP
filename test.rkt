@@ -47,57 +47,56 @@
 
 (check-equal? (evaluar-programa exp7) '((2) 5))
 
-(check-equal? (evaluar-programa exp8) '(6 8))
-#|
-;Test 1: 
-(define exp1 
-  (scan&parse
-    "let
-      x = {a:1,b:2,c:3,d:4,e:5}
-      in
-        display-dict(x)
-    "
-  )
-)
-(define expected-exp1
-  "{a:1, b:2, c:3, d:4, e:5}"
-)
+; (check-equal? (evaluar-programa exp8) '(6 8))
 
-(check-equal?  (eval-program exp1) expected-exp1)
+;; Tests de los condicionales
 
-;Test 2: 
-(define exp2 
-  (scan&parse
-    "let
-      x = {a:1,b:2,c:3,d:4,e:5,a:6,b:7,c:8,d:9,e:10}
-      in
-        display-dict(x)
-    "
-  )
-)
+;; 1. Expresión con un condicional verdadero
+(define expc1 (scan&parse "cond +(1,1) ==> 2 else ==> 0 end"))
 
-(define expected-exp2
-  "{a:6, b:7, c:8, d:9, e:10}"
-)
+(check-equal? (evaluar-programa expc1) 2)
 
-(check-equal?  (eval-program exp2) expected-exp2)
+;; 2. Expresión con un condicional falso
+(define expc2 (scan&parse "cond 0 ==> 1 else ==> 9 end"))
 
-; Test 3:
+(check-equal? (evaluar-programa expc2) 9)
 
-(define exp3 
-  (scan&parse
-    "let
-      x = {a:1,a:2,a:3,a:4,a:5,b:6,c:7,z:8,w:9,w:10,l:11}
-      in
-        display-dict(x)
-    "
-  )
-)
+;; 3. Expresión con un condicional vacio
+(define expc3 (scan&parse "cond else ==> 0 end"))
 
+(check-equal? (evaluar-programa expc3) 0)
 
-(define expected-exp3
-  "{a:5, b:6, c:7, l:11, w:10, z:8}"
-)
+;; 4. Expresión con multiples condiciones
+(define expc4 (scan&parse "cond +(1,1) ==> 2 -(1,1) ==> 0 else ==> 0 end"))
+(define expc5 (scan&parse "cond -(1,1) ==> 2 -(3,3) ==> 0 +(1,2) ==> 3  else ==> 10 end"))
 
-(check-equal?  (eval-program exp3) expected-exp3)
-|#
+(check-equal? (evaluar-programa expc4) 2)
+(check-equal? (evaluar-programa expc5) 3)
+
+;; 5. Expresión con una condicion booleana
+(define expc6 (scan&parse "cond true ==> 1 else ==> 0 end"))
+(define expc7 (scan&parse "cond false ==> 1 else ==> 0 end"))
+
+(check-equal? (evaluar-programa expc6) 1)
+(check-equal? (evaluar-programa expc7) 0)
+
+;; 6. Expresión con una condicion que no sea aritmetica
+(define expc8 (scan&parse "cond >(1, 2) ==> 1 <(1, 2) ==> 5 else ==> 9 end"))
+(define expc9 (scan&parse "cond ==(5, 4) ==> 1 let l = cons(1 cons(2 empty)) in ==(length(l), 2) ==> 3 else ==> 9 end"))
+
+(check-equal? (evaluar-programa expc8) 5)
+(check-equal? (evaluar-programa expc9) 3)
+
+;; 7. Expresión con condicionales anidados
+(define expc10 (scan&parse "cond >(3, 1) ==> cond -(3, 3) ==> true ==(1, 2) ==> 3 else ==> 0 end else ==> 9 end"))
+(define expc11 (scan&parse "cond >(5, 10) ==> true ==(1, 2) ==> 3 else ==> cond let x = 5 in -(x, 3) ==> true else ==> 0 end end"))
+
+(check-equal? (evaluar-programa expc10) 0)
+(check-equal? (evaluar-programa expc11) #t)
+
+;; 8. Expresión con condicionales de varios casos
+(define expc12 (scan&parse "cond let x = cond >(5, 6) ==> 1 <(5, 6) ==> 2 else ==> 3 end l = cons(1 cons(2 cons(3 empty))) in nth(l, x) ==> cond let y = cons(1 cons(2 empty)) in ==(first(y), 1) ==> 1 else ==> 0 end else ==> 9 end"))
+(define expc13 (scan&parse "cond let x = 5 y = 1 in cond <(x, y) ==> let z = cond ==(-(x, 3), y) ==> 3 ==(x, y) ==> 2 else ==> 10 end in >(x, -(z, y)) else ==> cond let l = cons(1 cons(5 cons(3 empty))) in ==(nth(l, 0), 1) ==> 30 else ==> false end end ==> 1 else ==> 15 end"))
+
+(check-equal? (evaluar-programa expc12) 1)
+(check-equal? (evaluar-programa expc13) 1)
