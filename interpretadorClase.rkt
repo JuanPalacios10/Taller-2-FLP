@@ -385,5 +385,5 @@
                          especificacion-lexica especificacion-gramatical)))
 
 
-;;(interpretador)
+(interpretador)
 (provide (all-defined-out))

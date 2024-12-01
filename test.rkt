@@ -68,7 +68,7 @@
 
 ;; 4. Expresión con multiples condiciones
 (define expc4 (scan&parse "cond +(1,1) ==> 2 -(1,1) ==> 0 else ==> 0 end"))
-(define expc5 (scan&parse "cond -(1,1) ==> 2 -(3,3) ==> 0 +(1,2) ==> 3  else ==> 10 end"))
+(define expc5 (scan&parse "cond -(1,1) ==> 2 -(3,3) ==> 0 +(1,2) ==> 3 else ==> 10 end"))
 
 (check-equal? (evaluar-programa expc4) 2)
 (check-equal? (evaluar-programa expc5) 3)
